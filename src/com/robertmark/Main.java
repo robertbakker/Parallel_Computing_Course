@@ -1,4 +1,6 @@
-package com.robert.is.de.best;
+package com.robertmark;
+
+import org.apache.commons.lang3.time.StopWatch;
 
 import java.util.Random;
 
@@ -7,7 +9,9 @@ public class Main {
     public static final int SIZE = Integer.MAX_VALUE / 100;
     public static final int THREADS = Runtime.getRuntime().availableProcessors();
 
-    private int[] array = new int[SIZE];
+    private static final StopWatch stopWatch = new StopWatch();
+
+    private Integer[] array = new Integer[SIZE];
 
     public static void main(String[] args) {
         Main main = new Main();
@@ -23,14 +27,11 @@ public class Main {
             array[i] = i;
         }
 
-        System.out.println("Warming up the VM by doing Shellsort for the first time\n");
-        ShellSort.shellsort(array);
         printNElements(10);
-        long startTime = System.currentTimeMillis();
-        ShellSort.shellsort(array);
-        long stopTime = System.currentTimeMillis();
-        long elapsedTime = stopTime - startTime;
-        System.out.println(String.format("Shell sort took: %dms on a sorted array \nof %d elements, ranging from 0 to %s\n", elapsedTime, SIZE, SIZE));
+        stopWatch.start();
+        MergeSort.sort(array);
+        stopWatch.stop();
+        System.out.println(String.format("Merge sort took: %dms on a sorted array \nof %d elements, ranging from 0 to %s\n", stopWatch.getTime(), SIZE, SIZE));
         printNElements(10);
 
         // Reusing array for new values
@@ -40,16 +41,17 @@ public class Main {
         }
         System.out.println("Filling array with random values...\n");
         printNElements(10);
-        startTime = System.currentTimeMillis();
-        ShellSort.shellsort(array);
-        stopTime = System.currentTimeMillis();
-        elapsedTime = stopTime - startTime;
-        System.out.println(String.format("Shell sort took: %dms on a array of %d elements, \nwith random values between from 0 and %s", elapsedTime, SIZE, SIZE));
+
+        stopWatch.reset();
+        stopWatch.start();
+        MergeSort.sort(array);
+        stopWatch.stop();
+        System.out.println(String.format("Merge sort took: %dms on a array of %d elements, \nwith random values between from 0 and %s", stopWatch.getTime(), SIZE, SIZE));
         printNElements(10);
     }
 
     public void runOnMultipleThreads() {
-        System.out.println("\nShell sort on multiple cores next.");
+        System.out.println("\nMerge sort on multiple cores next.");
         System.out.println(String.format("Available cores: %d\n", THREADS));
 
     }
