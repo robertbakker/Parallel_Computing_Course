@@ -11,7 +11,7 @@ public class Main {
 
     private static final StopWatch stopWatch = new StopWatch();
 
-    private Integer[] array = new Integer[SIZE];
+    private int[] array = new int[SIZE];
 
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
@@ -54,7 +54,6 @@ public class Main {
 //        System.out.println("\nMerge sort on multiple cores next.");
 //        System.out.println(String.format("Available cores: %d\n", THREADS));
 
-        int[] array = new int[SIZE];
         Random random = new Random();
         for (int i = 0; i < SIZE; i++) {
             array[i] = random.nextInt(SIZE);

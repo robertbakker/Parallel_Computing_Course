@@ -9,7 +9,7 @@ public class MergeSort {
     private MergeSort() { }
 
     // stably merge a[lo .. mid] with a[mid+1 ..hi] using aux[lo .. hi]
-    private static void merge(Comparable[] a, Comparable[] aux, int lo, int mid, int hi) {
+    private static void merge(int[] a, int[] aux, int lo, int mid, int hi) {
         // copy to aux[]
         for (int k = lo; k <= hi; k++) {
             aux[k] = a[k];
@@ -26,7 +26,7 @@ public class MergeSort {
     }
 
     // mergesort a[lo..hi] using auxiliary array aux[lo..hi]
-    private static void sort(Comparable[] a, Comparable[] aux, int lo, int hi) {
+    private static void sort(int[] a, int[] aux, int lo, int hi) {
         if (hi <= lo) return;
         int mid = lo + (hi - lo) / 2;
         sort(a, aux, lo, mid);
@@ -38,8 +38,8 @@ public class MergeSort {
      * Rearranges the array in ascending order, using the natural order.
      * @param a the array to be sorted
      */
-    public static void sort(Comparable[] a) {
-        Comparable[] aux = new Comparable[a.length];
+    public static void sort(int[] a) {
+        int[] aux = new int[a.length];
         sort(a, aux, 0, a.length-1);
     }
 
@@ -49,15 +49,15 @@ public class MergeSort {
      ***************************************************************************/
 
     // is v < w ?
-    private static boolean less(Comparable v, Comparable w) {
-        return v.compareTo(w) < 0;
+    private static boolean less(int v, int w) {
+        return v < w;
     }
 
     /***************************************************************************
      *  Index mergesort.
      ***************************************************************************/
     // stably merge a[lo .. mid] with a[mid+1 .. hi] using aux[lo .. hi]
-    private static void merge(Comparable[] a, int[] index, int[] aux, int lo, int mid, int hi) {
+    private static void merge(int[] a, int[] index, int[] aux, int lo, int mid, int hi) {
 
         // copy to aux[]
         for (int k = lo; k <= hi; k++) {
@@ -80,7 +80,7 @@ public class MergeSort {
      * @return a permutation {@code p[]} such that {@code a[p[0]]}, {@code a[p[1]]},
      *    ..., {@code a[p[N-1]]} are in ascending order
      */
-    public static int[] indexSort(Comparable[] a) {
+    public static int[] indexSort(int[] a) {
         int n = a.length;
         int[] index = new int[n];
         for (int i = 0; i < n; i++)
@@ -92,7 +92,7 @@ public class MergeSort {
     }
 
     // mergesort a[lo..hi] using auxiliary array aux[lo..hi]
-    private static void sort(Comparable[] a, int[] index, int[] aux, int lo, int hi) {
+    private static void sort(int[] a, int[] index, int[] aux, int lo, int hi) {
         if (hi <= lo) return;
         int mid = lo + (hi - lo) / 2;
         sort(a, index, aux, lo, mid);
