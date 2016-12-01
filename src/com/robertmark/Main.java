@@ -7,7 +7,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.nio.Buffer;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -25,26 +24,42 @@ public class Main {
 
         File file = new File(path + "/image.jpg");
         if (file.exists()) {
+            System.out.println("Graying image serial");
             BufferedImage image = ImageIO.read(file);
+            File outputFile = new File(path + "/grayscaled_image_serial.jpg");
             stopWatch.start();
-            GrayImage grayImage = new GrayImage(image);
-            grayImage.makeGray();
-            grayImage.getImage();
-            File outputFile = new File(path + "/grayscaled_image.jpg");
-            ImageIO.write(grayImage.getImage(), "jpg", outputFile);
+            GrayImage.makeGray(image);
+            stopWatch.stop();
+            System.out.println("int takes: " + stopWatch.getTime() + " milliseconds to gray this image");
+            ImageIO.write(GrayImage.makeGray(image), "jpg", outputFile);
         }
-        if(file.exists()){
-            System.out.print("Running multi threading");
+        stopWatch.reset();
+        if (file.exists()) {
+            System.out.println("Running multi threading");
             BufferedImage image = ImageIO.read(file);
-            GrayImage[] threads = new GrayImage[N_THREADS];
-            for (int i = 0; i < N_THREADS ; i++) {
-                threads[i] = new GrayImage(image);
+            GrayImageParallel[] threads = new GrayImageParallel[N_THREADS];
+            stopWatch.start();
+            int imageWidth = image.getWidth();
+            int height = image.getHeight();
+            int widthChunk = imageWidth / N_THREADS;
+
+            int startWidth = 0;
+            int endWidth = 0;
+            for (int i = 0; i < N_THREADS; i++) {
+                startWidth = i * widthChunk;
+                endWidth = i * widthChunk + widthChunk;
+                threads[i] = new GrayImageParallel(image, startWidth, endWidth, height);
+                System.out.println("thread[" + i + "] Is starting");
                 threads[i].run();
+
             }
-            for (int j = 0; j < N_THREADS ; j++) {
+            for (int j = 0; j < N_THREADS; j++) {
                 threads[j].join();
             }
-
+            stopWatch.stop();
+            System.out.println("All threads are finished and it takes: " + stopWatch.getTime() + " to grayscale this image");
+            File outputFile = new File(path + "/grayscaled_image_parallel.jpg");
+            ImageIO.write(threads[0].getImage(), "jpg", outputFile);
         }
     }
 
