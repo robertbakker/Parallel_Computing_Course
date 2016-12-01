@@ -26,9 +26,25 @@ public class Main {
         File file = new File(path + "/image.jpg");
         if (file.exists()) {
             BufferedImage image = ImageIO.read(file);
-            BufferedImage grayImage = GrayImage.makeGray(image);
+            stopWatch.start();
+            GrayImage grayImage = new GrayImage(image);
+            grayImage.makeGray();
+            grayImage.getImage();
             File outputFile = new File(path + "/grayscaled_image.jpg");
-            ImageIO.write(grayImage, "jpg", outputFile);
+            ImageIO.write(grayImage.getImage(), "jpg", outputFile);
+        }
+        if(file.exists()){
+            System.out.print("Running multi threading");
+            BufferedImage image = ImageIO.read(file);
+            GrayImage[] threads = new GrayImage[N_THREADS];
+            for (int i = 0; i < N_THREADS ; i++) {
+                threads[i] = new GrayImage(image);
+                threads[i].run();
+            }
+            for (int j = 0; j < N_THREADS ; j++) {
+                threads[j].join();
+            }
+
         }
     }
 
