@@ -3,6 +3,11 @@ package com.robertmark;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.nio.Buffer;
 import java.util.Arrays;
 import java.util.Random;
 
@@ -15,11 +20,14 @@ public class Main {
 
     private int[] array = new int[SIZE];
 
-    public static void main(String[] args) throws InterruptedException {
-        Main main = new Main();
-//        main.runOnSingleThread();
-        main.runOnTwoThreads();
-        main.runOnNThreads();
+    public static void main(String[] args) throws InterruptedException, IOException {
+        File file = new File("D:/Users/mark/Desktop/desktopmap/School/parallel computing/gitshit/Parallel_Computing_Course/src/com/robertmark/robert.jpg");
+        if (file.exists()) {
+            BufferedImage image = ImageIO.read(file);
+            BufferedImage grayImage = GrayImage.makeGray(image);
+            File outputFile = new File("D:/Users/mark/Desktop/desktopmap/School/parallel computing/gitshit/Parallel_Computing_Course/src/com/robertmark/grayImage.jpg");
+            ImageIO.write(grayImage, "jpg", outputFile);
+        }
     }
 
     public void runOnSingleThread() {
