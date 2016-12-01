@@ -21,11 +21,13 @@ public class Main {
     private int[] array = new int[SIZE];
 
     public static void main(String[] args) throws InterruptedException, IOException {
-        File file = new File("D:/Users/mark/Desktop/desktopmap/School/parallel computing/gitshit/Parallel_Computing_Course/src/com/robertmark/robert.jpg");
+        String path = (new File("")).getAbsolutePath();
+
+        File file = new File(path + "/image.jpg");
         if (file.exists()) {
             BufferedImage image = ImageIO.read(file);
             BufferedImage grayImage = GrayImage.makeGray(image);
-            File outputFile = new File("D:/Users/mark/Desktop/desktopmap/School/parallel computing/gitshit/Parallel_Computing_Course/src/com/robertmark/grayImage.jpg");
+            File outputFile = new File(path + "/grayscaled_image.jpg");
             ImageIO.write(grayImage, "jpg", outputFile);
         }
     }
