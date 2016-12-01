@@ -1,13 +1,15 @@
 package com.robertmark;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.time.StopWatch;
 
+import java.util.Arrays;
 import java.util.Random;
 
 public class Main {
 
     public static final int SIZE = Integer.MAX_VALUE / 100;
-    public static final int THREADS = Runtime.getRuntime().availableProcessors();
+    public static final int N_THREADS = Runtime.getRuntime().availableProcessors();
 
     private static final StopWatch stopWatch = new StopWatch();
 
@@ -15,9 +17,9 @@ public class Main {
 
     public static void main(String[] args) throws InterruptedException {
         Main main = new Main();
-        main.runOnSingleThread();
-
+//        main.runOnSingleThread();
         main.runOnTwoThreads();
+        main.runOnNThreads();
     }
 
     public void runOnSingleThread() {
@@ -51,9 +53,6 @@ public class Main {
     }
 
     public void runOnTwoThreads() throws InterruptedException {
-//        System.out.println("\nMerge sort on multiple cores next.");
-//        System.out.println(String.format("Available cores: %d\n", THREADS));
-
         Random random = new Random();
         for (int i = 0; i < SIZE; i++) {
             array[i] = random.nextInt(SIZE);
@@ -74,7 +73,7 @@ public class Main {
         runner2.start();
         runner1.join();
         runner2.join();
-        finalMerge(runner1.getInternal(), runner2.getInternal());
+        array = finalMerge(runner1.getInternal(), runner2.getInternal());
         stopWatch.stop();
         System.out.println("2-thread MergeSort takes: " + stopWatch.getTime() + " ms");
         printNElements(10);
@@ -88,7 +87,7 @@ public class Main {
         System.out.println();
     }
 
-    public static void finalMerge(int[] a, int[] b) {
+    public static int[] finalMerge(int[] a, int[] b) {
         int[] result = new int[a.length + b.length];
         int i = 0;
         int j = 0;
@@ -118,5 +117,40 @@ public class Main {
                 }
             }
         }
+        return result;
+    }
+
+    public void runOnNThreads() throws InterruptedException {
+        System.out.println("\nMerge sort on multiple cores next.");
+        System.out.println(String.format("Available cores: %d\n", N_THREADS));
+
+
+        Random random = new Random();
+        for (int i = 0; i < SIZE; i++) {
+            array[i] = random.nextInt(SIZE);
+        }
+
+        stopWatch.reset();
+        stopWatch.start();
+        int chunk = (int) Math.ceil(array.length / N_THREADS);
+
+        MergeSortThread[] threads = new MergeSortThread[N_THREADS];
+        for (int i = 0; i < N_THREADS; i++) {
+            threads[i] = new MergeSortThread(Arrays.copyOfRange(array, i, Math.min(array.length, i * chunk + chunk)));
+        }
+
+        for (int i = 0; i < N_THREADS; i++) {
+            threads[i].start();
+        }
+
+        for (int i = 0; i < N_THREADS; i++) {
+            threads[i].join();
+        }
+        array = finalMerge(ArrayUtils.addAll(threads[0].getInternal(), threads[1].getInternal()),
+                ArrayUtils.addAll(threads[2].getInternal(), threads[3].getInternal()));
+        stopWatch.stop();
+
+        System.out.println(N_THREADS + "-threads MergeSort takes: " + stopWatch.getTime() + " ms");
+        printNElements(10);
     }
 }
