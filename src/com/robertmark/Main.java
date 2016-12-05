@@ -43,16 +43,19 @@ public class Main {
             int height = image.getHeight();
             int widthChunk = imageWidth / N_THREADS;
 
-            int startWidth = 0;
-            int endWidth = 0;
-            for (int i = 0; i < N_THREADS; i++) {
+            int startWidth;
+            int endWidth;
+            for(int i = 0; i < N_THREADS; i++) {
                 startWidth = i * widthChunk;
                 endWidth = i * widthChunk + widthChunk;
                 threads[i] = new GrayImageParallel(image, startWidth, endWidth, height);
-                System.out.println("thread[" + i + "] Is starting");
-                threads[i].run();
-
             }
+
+            for (int i = 0; i < N_THREADS; i++) {
+                System.out.println("thread[" + i + "] Is starting");
+                threads[i].start();
+            }
+
             for (int j = 0; j < N_THREADS; j++) {
                 threads[j].join();
             }
