@@ -1,5 +1,7 @@
 (ns com.robertmark.image2)
 
+;https://rosettacode.org/wiki/Grayscale_image#Clojure
+
 (import '[java.io File]
         '[javax.imageio ImageIO]
         '[java.awt Color]
