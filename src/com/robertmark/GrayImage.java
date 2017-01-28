@@ -10,6 +10,9 @@ public class GrayImage {
 
     public static BufferedImage makeGray(BufferedImage img)
     {
+//        int[] test = img.getRGB(0,0, img.getWidth(), img.getHeight(), null, 0, img.getWidth());
+//        System.out.println(img.getWidth() * img.getHeight());
+//        System.out.println(test.length);
         for (int x = 0; x < img.getWidth(); ++x)
             for (int y = 0; y < img.getHeight(); ++y)
             {
