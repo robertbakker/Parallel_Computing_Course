@@ -5,7 +5,7 @@
   (import javax.imageio.ImageIO)
   (import org.apache.commons.lang3.time.StopWatch)
   )
-
+(set! *warn-on-reflection* true)
 (defn basePath []
   (.getAbsolutePath (new File ""))
   )
@@ -27,15 +27,15 @@
         grayLevel (int (/ (+ r g b) 3)),
         gray (+ (bit-shift-left grayLevel 16) (bit-shift-left grayLevel 8) grayLevel)
         ]
-    (.setRGB bufferedImage x y gray)
+    (.setRGB  bufferedImage x y gray)
     )
   )
 
 (defn makeGray
   [bufferedImage]
   (let [
-        width (.getWidth bufferedImage),
-        height (.getHeight bufferedImage)
+        ^int  width (.getWidth bufferedImage),
+        ^int height (.getHeight bufferedImage)
         ]
     (doseq [x (range (- width 1)) y (range (- height 1))]
       (grayPixel bufferedImage x y))
