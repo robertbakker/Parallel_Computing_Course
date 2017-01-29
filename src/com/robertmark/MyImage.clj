@@ -5,7 +5,6 @@
 
 (import 'java.awt.image.BufferedImage)
 (use 'clojure.java.io)
-(import '[javax.swing JFrame JLabel ImageIcon])
 
 (defn setpxl [^BufferedImage image data]
   (let [h (.getHeight image)
@@ -34,7 +33,7 @@
     (int (bit-or a r g b))))
 
 (defn testrgb []
-  (let [img (time (javax.imageio.ImageIO/read (as-file "resources/cat.jpg")))
+  (let [img (time (javax.imageio.ImageIO/read (as-file "../../../image.jpg")))
         h (.getHeight img)
         w (.getWidth img)
         arr (time (int-array (getpxl img)))
@@ -47,16 +46,9 @@
                ;;8000ms
                (amap ^ints arr idx ret ^int (graycalc (getrgb (aget ^ints arr idx))))
                )
-
-        frame (JFrame. "grayscale image")
-        label (JLabel. (ImageIcon. img))
-        panel (.getContentPane frame)]
-
-    (-> panel
-        (.add label))
-    (.setSize frame w h)
-    (.setVisible frame true)
-
+        ]
     (time (setpxl img gray))
-    (.repaint panel)
+
     ))
+
+(time (testrgb))
