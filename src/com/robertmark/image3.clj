@@ -36,9 +36,6 @@
         gray (+ (bit-shift-left grayLevel 16) (bit-shift-left grayLevel 8) grayLevel) ; Calculate the new grayscaled RGB value
         ]
     ; We set the new gray value directly to the BufferedImage reference
-    ; because if we loaded the pixel in memory first
-    ; Clojure would store each pixel in memory which lead to a LOT of memory usage on
-    ; a very large image
     (.setRGB bufferedImage x y gray)
     )
   )
@@ -62,6 +59,9 @@
         height-range (range h)                              ; Setup height range to iterate over
         ]
     (doseq [x width-range y height-range]                   ; Iterate over the full height and width of the image
+      ; We use the BufferedImage directly, because if we loaded each pixel in memory first to operate on
+      ; it lead to a LOT of memory usage using
+      ; a very large image
       (gray-pixel ^BufferedImage img x y)                   ; Make each pixel of the image gray
       )
     (save-buffered-image img outputFileName)                ; Save the grayscaled image
