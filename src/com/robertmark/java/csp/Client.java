@@ -36,10 +36,10 @@ public class Client {
         client.runSingleNodeMultipleTasks("Small", "vissenkom.jpg", "gray_java_vissenkom_single_node_multiple_tasks.jpg", service);
         System.out.println();
         client.runSingleNodeSingleTask("Medium", "hond.jpg", "gray_java_hond_single_node_single_task.jpg", service);
-        client.runSingleNodeMultipleTasks("Medium", "hond.jpg", "gray_java_hond_single_node_multiple_tasks", service);
+        client.runSingleNodeMultipleTasks("Medium", "hond.jpg", "gray_java_hond_single_node_multiple_tasks.jpg", service);
         System.out.println();
         client.runSingleNodeSingleTask("Large", "image.jpg", "gray_java_image_single_node_single_task.jpg", service);
-        client.runSingleNodeMultipleTasks("Large", "image.jpg", "gray_java_image_single_node_multiple_tasks", service);
+        client.runSingleNodeMultipleTasks("Large", "image.jpg", "gray_java_image_single_node_multiple_tasks.jpg", service);
 
     }
 
